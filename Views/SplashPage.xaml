@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LocationShareApp.Views.SplashPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             x:DataType="viewmodels:SplashViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Primary}">
+
+    <Grid>
+        <!-- 背景渐变 -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource Primary}" Offset="0.0" />
+                <GradientStop Color="{StaticResource Secondary}" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- 主要内容 -->
+        <StackLayout VerticalOptions="Center" Spacing="40" Padding="40">
+            
+            <!-- 应用Logo -->
+            <StackLayout Spacing="20" HorizontalOptions="Center">
+                <Frame BackgroundColor="White"
+                       CornerRadius="30"
+                       HeightRequest="120"
+                       WidthRequest="120"
+                       Padding="0"
+                       HasShadow="True">
+                    <Label Text="📍"
+                           FontSize="60"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Frame>
+                
+                <Label Text="位置共享"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+                
+                <Label Text="与家人朋友分享实时位置"
+                       FontSize="16"
+                       TextColor="White"
+                       Opacity="0.8"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+
+            <!-- 初始化进度 -->
+            <StackLayout Spacing="20">
+                
+                <!-- 进度条 -->
+                <ProgressBar Progress="{Binding InitializationProgress}"
+                             ProgressColor="White"
+                             BackgroundColor="#40FFFFFF"
+                             HeightRequest="6"
+                             Margin="20,0" />
+                
+                <!-- 当前步骤 -->
+                <Label Text="{Binding CurrentStep}"
+                       FontSize="14"
+                       TextColor="White"
+                       Opacity="0.9"
+                       HorizontalOptions="Center" />
+                
+                <!-- 加载动画 -->
+                <ActivityIndicator IsVisible="{Binding IsInitializing}"
+                                   IsRunning="{Binding IsInitializing}"
+                                   Color="White"
+                                   HorizontalOptions="Center" />
+            </StackLayout>
+
+            <!-- 错误信息 -->
+            <StackLayout IsVisible="{Binding HasError}" Spacing="15">
+                <Label Text="⚠️"
+                       FontSize="24"
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding ErrorMessage}"
+                       FontSize="14"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Button Text="重试"
+                        Command="{Binding RetryCommand}"
+                        BackgroundColor="White"
+                        TextColor="{StaticResource Primary}"
+                        CornerRadius="20"
+                        Padding="30,10"
+                        HorizontalOptions="Center" />
+            </StackLayout>
+
+        </StackLayout>
+
+        <!-- 版本信息 -->
+        <Label Text="{Binding AppVersion, StringFormat='版本 {0}'}"
+               FontSize="12"
+               TextColor="White"
+               Opacity="0.6"
+               HorizontalOptions="Center"
+               VerticalOptions="End"
+               Margin="0,0,0,20" />
+    </Grid>
+
+</ContentPage>

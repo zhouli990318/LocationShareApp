@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LocationShareApp.Views.UserDetailPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             xmlns:controls="clr-namespace:LocationShareApp.Controls"
+             x:DataType="viewmodels:UserDetailViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            
+            <!-- 用户基本信息 -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="15"
+                   HasShadow="True"
+                   Padding="20">
+                <StackLayout Spacing="15">
+                    
+                    <!-- 用户头像和信息 -->
+                    <StackLayout Orientation="Horizontal" Spacing="15">
+                        <Frame BackgroundColor="{StaticResource Primary}"
+                               CornerRadius="35"
+                               HeightRequest="70"
+                               WidthRequest="70"
+                               Padding="0"
+                               HasShadow="False">
+                            <Label Text="{Binding User.NickName, StringFormat='{0:C1}'}"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Frame>
+                        
+                        <StackLayout Spacing="5" VerticalOptions="Center">
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="{Binding User.NickName}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Gray900}" />
+                                <Ellipse Fill="{Binding User.IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                                         WidthRequest="12"
+                                         HeightRequest="12"
+                                         VerticalOptions="Center" />
+                            </StackLayout>
+                            <Label Text="{Binding User.LastActiveAt, StringFormat='最后活跃: {0:MM-dd HH:mm}'}"
+                                   FontSize="14"
+                                   TextColor="{StaticResource Gray600}" />
+                        </StackLayout>
+                    </StackLayout>
+
+                    <!-- 当前状态 -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                        
+                        <!-- 位置信息 -->
+                        <Frame Grid.Column="0"
+                               BackgroundColor="{StaticResource Gray100}"
+                               CornerRadius="10"
+                               Padding="15"
+                               HasShadow="False">
+                            <StackLayout Spacing="5">
+                                <Label Text="📍 当前位置"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Gray700}" />
+                                <Label Text="{Binding User.Location.Address}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray600}"
+                                       LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding User.Location.Timestamp, StringFormat='{0:HH:mm}'}"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Gray500}" />
+                            </StackLayout>
+                        </Frame>
+
+                        <!-- 电量信息 -->
+                        <Frame Grid.Column="1"
+                               BackgroundColor="{StaticResource Gray100}"
+                               CornerRadius="10"
+                               Padding="15"
+                               HasShadow="False">
+                            <StackLayout Spacing="5">
+                                <Label Text="🔋 电量状态"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Gray700}" />
+                                <Label Text="{Binding User.Battery.Level, StringFormat='{0}%'}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" />
+                                <Label Text="{Binding User.Battery.IsCharging}"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Gray500}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding User.Battery.IsCharging}" Value="True">
+                                            <Setter Property="Text" Value="充电中" />
+                                            <Setter Property="TextColor" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding User.Battery.IsCharging}" Value="False">
+                                            <Setter Property="Text" Value="未充电" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <!-- 位置轨迹地图 -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="15"
+                   HasShadow="True"
+                   Padding="0">
+                <StackLayout Spacing="0">
+                    <StackLayout Orientation="Horizontal" 
+                                 Padding="20,15,20,10"
+                                 Spacing="10">
+                        <Label Text="📍 24小时轨迹"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Gray900}"
+                               VerticalOptions="Center" />
+                        <Button Text="查看详情"
+                                Command="{Binding ViewLocationHistoryCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Primary}"
+                                FontSize="12"
+                                Padding="10,5"
+                                CornerRadius="10" />
+                    </StackLayout>
+                    
+                    <maps:Map x:Name="TrackMap"
+                              HeightRequest="200"
+                              MapType="Street">
+                    </maps:Map>
+                </StackLayout>
+            </Frame>
+
+            <!-- 电量图表 -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="15"
+                   HasShadow="True"
+                   Padding="20">
+                <StackLayout Spacing="15">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="🔋 24小时电量变化"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Gray900}"
+                               VerticalOptions="Center" />
+                        <Button Text="查看详情"
+                                Command="{Binding ViewBatteryHistoryCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Primary}"
+                                FontSize="12"
+                                Padding="10,5"
+                                CornerRadius="10" />
+                    </StackLayout>
+                    
+                    <!-- 电量图表显示 -->
+                    <Frame BackgroundColor="{StaticResource Gray100}"
+                           CornerRadius="10"
+                           Padding="5"
+                           HasShadow="False"
+                           HeightRequest="200">
+                        <controls:BatteryChartView BatteryData="{Binding BatteryHistory}" />
+                    </Frame>
+                </StackLayout>
+            </Frame>
+
+            <!-- 设备信息 -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="15"
+                   HasShadow="True"
+                   Padding="20">
+                <StackLayout Spacing="15">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="📱 设备信息"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Gray900}"
+                               VerticalOptions="Center" />
+                        <Button Text="刷新"
+                                Command="{Binding ViewDeviceInfoCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Primary}"
+                                FontSize="12"
+                                Padding="10,5"
+                                CornerRadius="10" />
+                    </StackLayout>
+                    
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="15" RowSpacing="10">
+                        
+                        <!-- 设备型号 -->
+                        <StackLayout Grid.Column="0" Grid.Row="0" Spacing="2">
+                            <Label Text="设备型号"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray600}" />
+                            <Label Text="{Binding DeviceInfo.DeviceModel}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray900}" />
+                        </StackLayout>
+
+                        <!-- 系统版本 -->
+                        <StackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
+                            <Label Text="系统版本"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray600}" />
+                            <Label Text="{Binding DeviceInfo.Version}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray900}" />
+                        </StackLayout>
+
+                        <!-- 网络类型 -->
+                        <StackLayout Grid.Column="0" Grid.Row="1" Spacing="2">
+                            <Label Text="网络类型"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray600}" />
+                            <Label Text="{Binding NetworkInfo.NetworkType}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray900}" />
+                        </StackLayout>
+
+                        <!-- 连接状态 -->
+                        <StackLayout Grid.Column="1" Grid.Row="1" Spacing="2">
+                            <Label Text="连接状态"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray600}" />
+                            <Label Text="{Binding NetworkInfo.IsConnected}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray900}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding NetworkInfo.IsConnected}" Value="True">
+                                        <Setter Property="Text" Value="已连接" />
+                                        <Setter Property="TextColor" Value="Green" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding NetworkInfo.IsConnected}" Value="False">
+                                        <Setter Property="Text" Value="未连接" />
+                                        <Setter Property="TextColor" Value="Red" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+
+                        <!-- 应用版本 -->
+                        <StackLayout Grid.Column="0" Grid.Row="2" Spacing="2">
+                            <Label Text="应用版本"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray600}" />
+                            <Label Text="{Binding DeviceInfo.AppVersion}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray900}" />
+                        </StackLayout>
+
+                        <!-- 制造商 -->
+                        <StackLayout Grid.Column="1" Grid.Row="2" Spacing="2">
+                            <Label Text="制造商"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray600}" />
+                            <Label Text="{Binding DeviceInfo.Manufacturer}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray900}" />
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <!-- 最近位置记录 -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="15"
+                   HasShadow="True"
+                   Padding="0">
+                <StackLayout Spacing="0">
+                    <Label Text="📍 最近位置记录"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray900}"
+                           Padding="20,15,20,10" />
+                    
+                    <CollectionView ItemsSource="{Binding LocationHistory}"
+                                    HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="20,10" ColumnDefinitions="*,Auto">
+                                    <StackLayout Grid.Column="0" Spacing="5">
+                                        <Label Text="{Binding Address}"
+                                               FontSize="14"
+                                               TextColor="{StaticResource Gray900}" />
+                                        <Label Text="{Binding Timestamp, StringFormat='{0:MM-dd HH:mm:ss}'}"
+                                               FontSize="12"
+                                               TextColor="{StaticResource Gray600}" />
+                                    </StackLayout>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Accuracy, StringFormat='±{0:F0}m'}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Gray500}"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>

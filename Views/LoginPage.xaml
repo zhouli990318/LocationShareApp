@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LocationShareApp.Views.LoginPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             x:DataType="viewmodels:LoginViewModel"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <Grid RowDefinitions="*,Auto,*" Padding="20">
+            
+            <!-- Logo区域 -->
+            <StackLayout Grid.Row="0" VerticalOptions="End" Spacing="20">
+                <Image Source="app_logo.png" 
+                       HeightRequest="120" 
+                       WidthRequest="120"
+                       HorizontalOptions="Center" />
+                <Label Text="位置共享" 
+                       FontSize="28" 
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource Primary}" />
+                <Label Text="与家人朋友分享实时位置" 
+                       FontSize="16" 
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource Gray600}" />
+            </StackLayout>
+
+            <!-- 登录表单 -->
+            <StackLayout Grid.Row="1" Spacing="20" Margin="0,40">
+                
+                <!-- 手机号输入 -->
+                <Frame BackgroundColor="White" 
+                       BorderColor="{StaticResource Gray200}"
+                       CornerRadius="12"
+                       Padding="0"
+                       HasShadow="True">
+                    <Entry x:Name="PhoneEntry"
+                           Text="{Binding PhoneNumber}"
+                           Placeholder="请输入手机号"
+                           Keyboard="Telephone"
+                           FontSize="16"
+                           Margin="15,10" />
+                </Frame>
+
+                <!-- 密码输入 -->
+                <Frame BackgroundColor="White" 
+                       BorderColor="{StaticResource Gray200}"
+                       CornerRadius="12"
+                       Padding="0"
+                       HasShadow="True">
+                    <Entry x:Name="PasswordEntry"
+                           Text="{Binding Password}"
+                           Placeholder="请输入密码"
+                           IsPassword="True"
+                           FontSize="16"
+                           Margin="15,10" />
+                </Frame>
+
+                <!-- 错误信息 -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       FontSize="14"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                       HorizontalOptions="Center" />
+
+                <!-- 登录按钮 -->
+                <Button Text="登录"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
+
+                <!-- 加载指示器 -->
+                <ActivityIndicator IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}"
+                                   Color="{StaticResource Primary}"
+                                   HorizontalOptions="Center" />
+
+            </StackLayout>
+
+            <!-- 注册链接 -->
+            <StackLayout Grid.Row="2" VerticalOptions="Start" Margin="0,20">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="还没有账号？" 
+                           TextColor="{StaticResource Gray600}"
+                           FontSize="14" />
+                    <Label Text="立即注册"
+                           TextColor="{StaticResource Primary}"
+                           FontSize="14"
+                           FontAttributes="Bold">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRegisterCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

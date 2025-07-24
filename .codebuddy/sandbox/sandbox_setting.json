@@ -1,0 +1,20 @@
+{
+  "path": "c:\\Users\\86132\\codebuddy\\location_share",
+  "desc": "这是一个家庭位置共享移动应用项目，包含.NET MAUI跨平台移动端和ASP.NET Core Web API后端服务。主要功能包括用户注册登录、实时位置共享、电量监控、设备信息查看等。支持通过绑定码关联用户，实时查看家庭成员位置和设备状态。后端API提供RESTful接口和SignalR实时通信功能。",
+  "id": "ae9e3d944ca34413b1708f76b809da5b",
+  "data": {
+    "spaceKey": "ae9e3d944ca34413b1708f76b809da5b",
+    "connections": {
+      "webIDE": "https://ae9e3d944ca34413b1708f76b809da5b.ap-singapore.cloudstudio.club",
+      "preview": "",
+      "api": "https://ae9e3d944ca34413b1708f76b809da5b--api.ap-singapore.cloudstudio.club",
+      "pty": "https://ae9e3d944ca34413b1708f76b809da5b--pty.ap-singapore.cloudstudio.club"
+    }
+  },
+  "config": {
+    "api": "https://ae9e3d944ca34413b1708f76b809da5b--api.ap-singapore.cloudstudio.club",
+    "pty": "https://ae9e3d944ca34413b1708f76b809da5b--pty.ap-singapore.cloudstudio.club",
+    "region": "ap-shanghai",
+    "spaceKey": "ae9e3d944ca34413b1708f76b809da5b"
+  }
+}

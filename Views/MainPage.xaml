@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LocationShareApp.Views.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             x:DataType="viewmodels:MainViewModel"
+             Title="{Binding Title}">
+
+    <Grid>
+        <!-- 地图视图 -->
+        <maps:Map x:Name="MapView"
+                  IsShowingUser="True"
+                  MapType="Street">
+            <maps:Map.ItemTemplate>
+                <DataTemplate>
+                    <maps:Pin Location="{Binding Location}"
+                              Address="{Binding Address}"
+                              Label="{Binding Label}" />
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
+        </maps:Map>
+
+        <!-- 顶部工具栏 -->
+        <Frame BackgroundColor="White"
+               CornerRadius="0"
+               HasShadow="True"
+               Padding="15,10"
+               VerticalOptions="Start">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                
+                <!-- 用户头像和信息 -->
+                <StackLayout Grid.Column="0" 
+                             Orientation="Horizontal" 
+                             Spacing="10"
+                             VerticalOptions="Center">
+                    <Frame BackgroundColor="{StaticResource Primary}"
+                           CornerRadius="20"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           Padding="0"
+                           HasShadow="False">
+                        <Label Text="{Binding CurrentUser.NickName, StringFormat='{0:C1}'}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Frame>
+                    <StackLayout Spacing="2">
+                        <Label Text="{Binding CurrentUser.NickName}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Gray900}" />
+                        <Label Text="{Binding CurrentUser.BindingCode, StringFormat='绑定码: {0}'}"
+                               FontSize="12"
+                               TextColor="{StaticResource Gray600}" />
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- 刷新按钮 -->
+                <Button Grid.Column="2"
+                        Text="刷新"
+                        Command="{Binding RefreshCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource Primary}"
+                        FontSize="14"
+                        Padding="10,5"
+                        CornerRadius="15" />
+
+                <!-- 添加用户按钮 -->
+                <Button Grid.Column="3"
+                        Text="+"
+                        Command="{Binding AddUserCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Padding="0" />
+            </Grid>
+        </Frame>
+
+        <!-- 底部用户列表 -->
+        <Frame BackgroundColor="White"
+               CornerRadius="20,20,0,0"
+               HasShadow="True"
+               Padding="0"
+               VerticalOptions="End"
+               HeightRequest="200">
+            <Grid RowDefinitions="Auto,*">
+                
+                <!-- 列表标题 -->
+                <StackLayout Grid.Row="0" 
+                             Orientation="Horizontal" 
+                             Padding="20,15,20,10"
+                             Spacing="10">
+                    <Label Text="关联用户"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray900}"
+                           VerticalOptions="Center" />
+                    <Label Text="{Binding ConnectedUsers.Count, StringFormat='({0})'}"
+                           FontSize="16"
+                           TextColor="{StaticResource Gray600}"
+                           VerticalOptions="Center" />
+                </StackLayout>
+
+                <!-- 用户列表 -->
+                <CollectionView Grid.Row="1"
+                                ItemsSource="{Binding ConnectedUsers}"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="0" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="20,10" ColumnDefinitions="Auto,*,Auto,Auto">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=UserTappedCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+
+                                <!-- 用户头像 -->
+                                <Frame Grid.Column="0"
+                                       BackgroundColor="{StaticResource Primary}"
+                                       CornerRadius="25"
+                                       HeightRequest="50"
+                                       WidthRequest="50"
+                                       Padding="0"
+                                       HasShadow="False">
+                                    <Label Text="{Binding NickName, StringFormat='{0:C1}'}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                </Frame>
+
+                                <!-- 用户信息 -->
+                                <StackLayout Grid.Column="1" 
+                                             Spacing="5" 
+                                             Margin="15,0,0,0"
+                                             VerticalOptions="Center">
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{Binding NickName}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource Gray900}" />
+                                        <Ellipse Fill="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                                                 WidthRequest="8"
+                                                 HeightRequest="8"
+                                                 VerticalOptions="Center" />
+                                    </StackLayout>
+                                    <Label Text="{Binding Location.Address}"
+                                           FontSize="14"
+                                           TextColor="{StaticResource Gray600}"
+                                           IsVisible="{Binding Location, Converter={StaticResource StringToBoolConverter}}" />
+                                </StackLayout>
+
+                                <!-- 电量信息 -->
+                                <StackLayout Grid.Column="2" 
+                                             Spacing="2"
+                                             VerticalOptions="Center"
+                                             IsVisible="{Binding Battery, Converter={StaticResource StringToBoolConverter}}">
+                                    <Label Text="{Binding Battery.Level, StringFormat='{0}%'}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Gray900}"
+                                           HorizontalOptions="Center" />
+                                    <Label Text="{Binding Battery.IsCharging, StringFormat='{0}'}"
+                                           FontSize="10"
+                                           TextColor="{StaticResource Primary}"
+                                           HorizontalOptions="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Battery.IsCharging}" Value="True">
+                                                <Setter Property="Text" Value="充电中" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Battery.IsCharging}" Value="False">
+                                                <Setter Property="Text" Value="" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </StackLayout>
+
+                                <!-- 箭头图标 -->
+                                <Label Grid.Column="3"
+                                       Text=">"
+                                       FontSize="16"
+                                       TextColor="{StaticResource Gray400}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Frame>
+
+        <!-- 加载指示器 -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           BackgroundColor="#80000000"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+    </Grid>
+
+</ContentPage>
