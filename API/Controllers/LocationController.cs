@@ -12,11 +12,13 @@ namespace LocationShareApp.API.Controllers
     {
         private readonly ILocationService _locationService;
         private readonly IUserService _userService;
+        private readonly ILogger<LocationController> _logger;
 
-        public LocationController(ILocationService locationService, IUserService userService)
+        public LocationController(ILocationService locationService, IUserService userService, ILogger<LocationController> logger)
         {
             _locationService = locationService;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("update")]
@@ -51,6 +53,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "位置更新失败");
                 return StatusCode(500, new { message = "位置更新失败", error = ex.Message });
             }
         }
@@ -77,6 +80,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取位置历史失败");
                 return StatusCode(500, new { message = "获取位置历史失败", error = ex.Message });
             }
         }
@@ -111,6 +115,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取用户位置历史失败");
                 return StatusCode(500, new { message = "获取位置历史失败", error = ex.Message });
             }
         }
@@ -138,6 +143,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取最新位置失败");
                 return StatusCode(500, new { message = "获取最新位置失败", error = ex.Message });
             }
         }
@@ -173,6 +179,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取用户最新位置失败");
                 return StatusCode(500, new { message = "获取最新位置失败", error = ex.Message });
             }
         }

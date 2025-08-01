@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- 响应式断点定义 -->
+    <!-- 手机竖屏: 0-600dp -->
+    <!-- 手机横屏/小平板: 600-840dp -->
+    <!-- 平板: 840-1200dp -->
+    <!-- 桌面: 1200dp+ -->
+
+    <!-- 手机竖屏样式 -->
+    <Style x:Key="PhonePortraitContainer" TargetType="Grid">
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="RowSpacing" Value="16" />
+        <Setter Property="ColumnSpacing" Value="16" />
+    </Style>
+
+    <Style x:Key="PhonePortraitCard" TargetType="Frame">
+        <Setter Property="Margin" Value="0,8" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+    </Style>
+
+    <!-- 手机横屏/小平板样式 -->
+    <Style x:Key="PhoneLandscapeContainer" TargetType="Grid">
+        <Setter Property="Padding" Value="24" />
+        <Setter Property="RowSpacing" Value="20" />
+        <Setter Property="ColumnSpacing" Value="20" />
+    </Style>
+
+    <Style x:Key="PhoneLandscapeCard" TargetType="Frame">
+        <Setter Property="Margin" Value="0,12" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+    </Style>
+
+    <!-- 平板样式 -->
+    <Style x:Key="TabletContainer" TargetType="Grid">
+        <Setter Property="Padding" Value="32" />
+        <Setter Property="RowSpacing" Value="24" />
+        <Setter Property="ColumnSpacing" Value="24" />
+    </Style>
+
+    <Style x:Key="TabletCard" TargetType="Frame">
+        <Setter Property="Margin" Value="0,16" />
+        <Setter Property="Padding" Value="24" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+    </Style>
+
+    <!-- 响应式文字大小 -->
+    <Style x:Key="ResponsiveHeadline" TargetType="Label">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.2" />
+    </Style>
+
+    <Style x:Key="ResponsiveSubtitle" TargetType="Label">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.3" />
+    </Style>
+
+    <Style x:Key="ResponsiveBody" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.4" />
+    </Style>
+
+    <Style x:Key="ResponsiveCaption" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="LineHeight" Value="1.3" />
+    </Style>
+
+    <!-- 响应式按钮 -->
+    <Style x:Key="ResponsivePrimaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="24,12" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Gray600}"
+                    Offset="0,2"
+                    Radius="8"
+                    Opacity="0.2" />
+        </Setter>
+    </Style>
+
+    <Style x:Key="ResponsiveSecondaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="24,12" />
+    </Style>
+
+    <!-- 响应式地图容器 -->
+    <Style x:Key="ResponsiveMapContainer" TargetType="Grid">
+        <Setter Property="RowDefinitions" Value="*,Auto" />
+    </Style>
+
+    <!-- 手机竖屏地图样式 -->
+    <Style x:Key="PhonePortraitMap" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <!-- 手机横屏地图样式 -->
+    <Style x:Key="PhoneLandscapeMap" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="16" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <!-- 平板地图样式 -->
+    <Style x:Key="TabletMap" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="24" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <!-- 响应式底部面板 -->
+    <Style x:Key="PhoneBottomPanel" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="20,20,0,0" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="HeightRequest" Value="280" />
+    </Style>
+
+    <Style x:Key="TabletBottomPanel" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="WidthRequest" Value="400" />
+        <Setter Property="HeightRequest" Value="600" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="FillAndExpand" />
+        <Setter Property="Margin" Value="0,0,24,0" />
+    </Style>
+
+    <!-- 响应式浮动按钮组 -->
+    <Style x:Key="PhoneFABContainer" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Vertical" />
+        <Setter Property="Spacing" Value="12" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="Margin" Value="0,0,16,0" />
+    </Style>
+
+    <Style x:Key="TabletFABContainer" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="16" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="End" />
+        <Setter Property="Margin" Value="0,0,0,24" />
+    </Style>
+
+    <!-- 响应式列表项 -->
+    <Style x:Key="PhoneListItem" TargetType="Grid">
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="ColumnDefinitions" Value="Auto,*,Auto" />
+        <Setter Property="ColumnSpacing" Value="12" />
+    </Style>
+
+    <Style x:Key="TabletListItem" TargetType="Grid">
+        <Setter Property="Padding" Value="20,16" />
+        <Setter Property="ColumnDefinitions" Value="Auto,*,Auto,Auto" />
+        <Setter Property="ColumnSpacing" Value="16" />
+    </Style>
+
+    <!-- 响应式头像大小 -->
+    <Style x:Key="PhoneAvatar" TargetType="Frame">
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+    </Style>
+
+    <Style x:Key="TabletAvatar" TargetType="Frame">
+        <Setter Property="WidthRequest" Value="56" />
+        <Setter Property="HeightRequest" Value="56" />
+        <Setter Property="CornerRadius" Value="28" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+    </Style>
+
+</ResourceDictionary>

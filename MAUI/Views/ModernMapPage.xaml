@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LocationShareApp.Views.ModernMapPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             x:DataType="viewmodels:MainViewModel"
+             Title=""
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource Surface}">
+
+    <Grid>
+        <!-- 主地图区域 -->
+        <maps:Map x:Name="MapView"
+                  IsShowingUser="True"
+                  MapType="Street"
+                  VerticalOptions="FillAndExpand"
+                  HorizontalOptions="FillAndExpand"
+                  MapClicked="OnMapClicked" />
+
+        <!-- 渐变遮罩层 - 顶部 -->
+        <BoxView VerticalOptions="Start"
+                 HeightRequest="120"
+                 HorizontalOptions="FillAndExpand">
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#80FFFFFF" Offset="0.0" />
+                    <GradientStop Color="#00FFFFFF" Offset="1.0" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+
+        <!-- 顶部状态栏和导航 -->
+        <Grid VerticalOptions="Start" 
+              Padding="16,44,16,16"
+              RowDefinitions="Auto,Auto">
+            
+            <!-- 状态栏信息 -->
+            <Grid Grid.Row="0" 
+                  ColumnDefinitions="Auto,*,Auto,Auto,Auto"
+                  Margin="0,0,0,12">
+                
+                <!-- 时间 -->
+                <Label Grid.Column="0"
+                       Text="13:33"
+                       Style="{StaticResource MaterialSubtitle1}"
+                       TextColor="{StaticResource OnSurface}"
+                       VerticalOptions="Center" />
+                
+                <!-- 网络状态 -->
+                <StackLayout Grid.Column="2" 
+                             Orientation="Horizontal" 
+                             Spacing="4"
+                             VerticalOptions="Center">
+                    <Label Text="5G"
+                           Style="{StaticResource MaterialCaption}"
+                           TextColor="{StaticResource OnSurface}"
+                           FontAttributes="Bold" />
+                    <Label Text="68%"
+                           Style="{StaticResource MaterialCaption}"
+                           TextColor="{StaticResource Secondary}"
+                           FontAttributes="Bold" />
+                </StackLayout>
+            </Grid>
+
+            <!-- 导航栏 -->
+            <Grid Grid.Row="1" 
+                  ColumnDefinitions="Auto,*,Auto">
+                
+                <!-- 返回按钮 -->
+                <Button Grid.Column="0"
+                        Text="←"
+                        Style="{StaticResource MaterialTextButton}"
+                        FontSize="24"
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        CornerRadius="22"
+                        BackgroundColor="#40FFFFFF"
+                        TextColor="{StaticResource OnSurface}" />
+                
+                <!-- 标题 -->
+                <Label Grid.Column="1"
+                       Text="周李"
+                       Style="{StaticResource MaterialSubtitle1}"
+                       TextColor="{StaticResource OnSurface}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                
+                <!-- 设置按钮 -->
+                <Button Grid.Column="2"
+                        Text="⚙"
+                        Style="{StaticResource MaterialTextButton}"
+                        FontSize="20"
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        CornerRadius="22"
+                        BackgroundColor="#40FFFFFF"
+                        TextColor="{StaticResource OnSurface}" />
+            </Grid>
+        </Grid>
+
+        <!-- 用户位置标记 -->
+        <Frame Style="{StaticResource MaterialAvatar}"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Margin="0,0,120,80"
+               BackgroundColor="{StaticResource Primary}">
+            <Label Text="周"
+                   Style="{StaticResource MaterialBody1}"
+                   TextColor="{StaticResource PrimaryDarkText}"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Frame>
+
+        <!-- 浮动操作按钮组 - 右侧 -->
+        <StackLayout VerticalOptions="Center"
+                     HorizontalOptions="End"
+                     Margin="0,0,16,0"
+                     Spacing="12">
+            
+            <!-- 定位按钮 -->
+            <Button Style="{StaticResource MaterialMiniFAB}"
+                    Text="📍"
+                    FontSize="16"
+                    Command="{Binding LocationCommand}" />
+            
+            <!-- 图层按钮 -->
+            <Button Style="{StaticResource MaterialMiniFAB}"
+                    Text="🗺"
+                    FontSize="16"
+                    Command="{Binding LayerCommand}" />
+            
+            <!-- 好友按钮 -->
+            <Button Style="{StaticResource MaterialMiniFAB}"
+                    Text="👥"
+                    FontSize="16"
+                    Command="{Binding FriendsCommand}" />
+        </StackLayout>
+
+        <!-- 底部信息面板 -->
+        <Frame Style="{StaticResource MaterialBottomNavigation}"
+               VerticalOptions="End"
+               HeightRequest="280"
+               Margin="0">
+            
+            <Grid RowDefinitions="Auto,Auto,*">
+                
+                <!-- 日期选择器 -->
+                <Grid Grid.Row="0" 
+                      Padding="20,16,20,8"
+                      ColumnDefinitions="*,*,*,*,*">
+                    
+                    <Button Grid.Column="0"
+                            Text="今天"
+                            Style="{StaticResource MaterialTextButton}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource PrimaryDarkText}"
+                            CornerRadius="16"
+                            FontSize="14" />
+                    
+                    <Button Grid.Column="1"
+                            Text="昨天"
+                            Style="{StaticResource MaterialTextButton}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="14" />
+                    
+                    <Button Grid.Column="2"
+                            Text="7.15"
+                            Style="{StaticResource MaterialTextButton}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="14" />
+                    
+                    <Button Grid.Column="3"
+                            Text="7.14"
+                            Style="{StaticResource MaterialTextButton}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="14" />
+                    
+                    <Button Grid.Column="4"
+                            Text="7.13"
+                            Style="{StaticResource MaterialTextButton}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="14" />
+                </Grid>
+
+                <!-- 轨迹/定位点切换 -->
+                <Grid Grid.Row="1" 
+                      Padding="20,8,20,16"
+                      ColumnDefinitions="*,*">
+                    
+                    <Button Grid.Column="0"
+                            Text="轨迹"
+                            Style="{StaticResource MaterialTextButton}"
+                            BackgroundColor="{StaticResource Secondary}"
+                            TextColor="{StaticResource SecondaryDarkText}"
+                            CornerRadius="16"
+                            FontSize="14" />
+                    
+                    <Button Grid.Column="1"
+                            Text="定位点"
+                            Style="{StaticResource MaterialTextButton}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="14" />
+                </Grid>
+
+                <!-- 位置信息列表 -->
+                <ScrollView Grid.Row="2">
+                    <StackLayout Spacing="0" Padding="20,0,20,20">
+                        
+                        <!-- 工作场所 -->
+                        <Grid Style="{StaticResource MaterialListItem}"
+                              ColumnDefinitions="Auto,*,Auto"
+                              Padding="0,16">
+                            
+                            <Frame Grid.Column="0"
+                                   Style="{StaticResource MaterialAvatar}"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   CornerRadius="20"
+                                   BackgroundColor="{StaticResource Secondary}">
+                                <Label Text="📍"
+                                       FontSize="18"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Frame>
+                            
+                            <StackLayout Grid.Column="1" 
+                                         Spacing="4" 
+                                         Margin="12,0,0,0"
+                                         VerticalOptions="Center">
+                                <Label Text="工作场所"
+                                       Style="{StaticResource MaterialSubtitle1}" />
+                                <Label Text="停留1h34min • 5G"
+                                       Style="{StaticResource MaterialCaption}" />
+                            </StackLayout>
+                            
+                            <Label Grid.Column="2"
+                                   Text="11:59"
+                                   Style="{StaticResource MaterialCaption}"
+                                   VerticalOptions="Start"
+                                   Margin="0,4,0,0" />
+                        </Grid>
+
+                        <!-- 步行轨迹 -->
+                        <Grid Style="{StaticResource MaterialListItem}"
+                              ColumnDefinitions="Auto,*,Auto"
+                              Padding="0,12">
+                            
+                            <Frame Grid.Column="0"
+                                   Style="{StaticResource MaterialSmallAvatar}"
+                                   BackgroundColor="{StaticResource MapAccent}">
+                                <Label Text="🚶"
+                                       FontSize="14"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Frame>
+                            
+                            <StackLayout Grid.Column="1" 
+                                         Spacing="2" 
+                                         Margin="12,0,0,0"
+                                         VerticalOptions="Center">
+                                <Label Text="步行"
+                                       Style="{StaticResource MaterialBody2}"
+                                       FontAttributes="Bold" />
+                                <Label Text="0.35km • 28min • 与速0km/h • 5EBKJ"
+                                       Style="{StaticResource MaterialCaption}" />
+                            </StackLayout>
+                            
+                            <Label Grid.Column="2"
+                                   Text="11:31"
+                                   Style="{StaticResource MaterialCaption}"
+                                   VerticalOptions="Start" />
+                        </Grid>
+
+                        <!-- 分隔线 -->
+                        <BoxView Style="{StaticResource MaterialDivider}" 
+                                 Margin="52,8,0,8" />
+
+                        <!-- 其他位置记录... -->
+                        <Grid Style="{StaticResource MaterialListItem}"
+                              ColumnDefinitions="Auto,*,Auto"
+                              Padding="0,16">
+                            
+                            <Frame Grid.Column="0"
+                                   Style="{StaticResource MaterialAvatar}"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   CornerRadius="20"
+                                   BackgroundColor="{StaticResource Secondary}">
+                                <Label Text="🏠"
+                                       FontSize="18"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Frame>
+                            
+                            <StackLayout Grid.Column="1" 
+                                         Spacing="4" 
+                                         Margin="12,0,0,0"
+                                         VerticalOptions="Center">
+                                <Label Text="家"
+                                       Style="{StaticResource MaterialSubtitle1}" />
+                                <Label Text="停留8h11min • CMCC-raRw-5G"
+                                       Style="{StaticResource MaterialCaption}" />
+                            </StackLayout>
+                            
+                            <Label Grid.Column="2"
+                                   Text="00:00"
+                                   Style="{StaticResource MaterialCaption}"
+                                   VerticalOptions="Start"
+                                   Margin="0,4,0,0" />
+                        </Grid>
+                    </StackLayout>
+                </ScrollView>
+            </Grid>
+        </Frame>
+
+        <!-- 地点编辑按钮 -->
+        <Button Text="📍 地点"
+                Style="{StaticResource MaterialTextButton}"
+                BackgroundColor="#E0FFFFFF"
+                TextColor="{StaticResource OnSurface}"
+                CornerRadius="20"
+                Padding="16,8"
+                FontSize="14"
+                VerticalOptions="End"
+                HorizontalOptions="Start"
+                Margin="20,0,0,300" />
+
+        <!-- 加载指示器 -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           BackgroundColor="#80000000"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+    </Grid>
+
+</ContentPage>

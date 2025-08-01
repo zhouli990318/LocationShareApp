@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 允许对特定域名/IP进行明文HTTP通信 -->
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="false">192.168.1.201</domain>-->
+<!--        &lt;!&ndash; 如果需要，可以添加更多允许的IP或域名 &ndash;&gt;-->
+<!--        &lt;!&ndash; <domain includeSubdomains="false">another-ip-or-domain</domain> &ndash;&gt;-->
+<!--    </domain-config>-->
+
+    <!-- 或者，允许对所有域名进行明文HTTP通信 (仅用于开发，非常不安全！) -->
+     <base-config cleartextTrafficPermitted="true" /> 
+</network-security-config>

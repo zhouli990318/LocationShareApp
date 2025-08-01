@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Material Design 卡片样式 -->
+    <Style x:Key="MaterialCard" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Gray400}"
+                    Offset="0,2"
+                    Radius="8"
+                    Opacity="0.16" />
+        </Setter>
+    </Style>
+
+    <!-- Material Design 浮动操作按钮 -->
+    <Style x:Key="MaterialFAB" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="{StaticResource PrimaryDarkText}" />
+        <Setter Property="CornerRadius" Value="28" />
+        <Setter Property="WidthRequest" Value="56" />
+        <Setter Property="HeightRequest" Value="56" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Gray600}"
+                    Offset="0,4"
+                    Radius="12"
+                    Opacity="0.3" />
+        </Setter>
+    </Style>
+
+    <!-- Material Design 小型浮动操作按钮 -->
+    <Style x:Key="MaterialMiniFAB" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+        <Setter Property="TextColor" Value="{StaticResource SecondaryDarkText}" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Gray500}"
+                    Offset="0,2"
+                    Radius="6"
+                    Opacity="0.25" />
+        </Setter>
+    </Style>
+
+    <!-- Material Design 文本按钮 -->
+    <Style x:Key="MaterialTextButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="BorderWidth" Value="0" />
+    </Style>
+
+    <!-- Material Design 轮廓按钮 -->
+    <Style x:Key="MaterialOutlinedButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+
+    <!-- Material Design 头像样式 -->
+    <Style x:Key="MaterialAvatar" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="CornerRadius" Value="24" />
+        <Setter Property="WidthRequest" Value="48" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="BorderColor" Value="Transparent" />
+    </Style>
+
+    <!-- Material Design 小头像样式 -->
+    <Style x:Key="MaterialSmallAvatar" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="WidthRequest" Value="32" />
+        <Setter Property="HeightRequest" Value="32" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="BorderColor" Value="Transparent" />
+    </Style>
+
+    <!-- Material Design 列表项样式 -->
+    <Style x:Key="MaterialListItem" TargetType="Grid">
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+    </Style>
+
+    <!-- Material Design 分隔线 -->
+    <Style x:Key="MaterialDivider" TargetType="BoxView">
+        <Setter Property="BackgroundColor" Value="{StaticResource Gray200}" />
+        <Setter Property="HeightRequest" Value="1" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+    </Style>
+
+    <!-- Material Design 顶部应用栏 -->
+    <Style x:Key="MaterialTopAppBar" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Gray400}"
+                    Offset="0,2"
+                    Radius="4"
+                    Opacity="0.12" />
+        </Setter>
+    </Style>
+
+    <!-- Material Design 底部导航栏 -->
+    <Style x:Key="MaterialBottomNavigation" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource Gray400}"
+                    Offset="0,-2"
+                    Radius="8"
+                    Opacity="0.16" />
+        </Setter>
+    </Style>
+
+    <!-- Material Design 输入框样式 -->
+    <Style x:Key="MaterialEntry" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceVariant}" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="FontSize" Value="16" />
+        <!--<Setter Property="Padding" Value="16,12" /> -->
+        <Setter Property="MinimumHeightRequest" Value="48" />
+    </Style>
+
+    <!-- Material Design 标题样式 -->
+    <Style x:Key="MaterialHeadline1" TargetType="Label">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.2" />
+    </Style>
+
+    <Style x:Key="MaterialHeadline2" TargetType="Label">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.3" />
+    </Style>
+
+    <Style x:Key="MaterialSubtitle1" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.4" />
+    </Style>
+
+    <Style x:Key="MaterialBody1" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.5" />
+    </Style>
+
+    <Style x:Key="MaterialBody2" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="LineHeight" Value="1.4" />
+    </Style>
+
+    <Style x:Key="MaterialCaption" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="LineHeight" Value="1.3" />
+    </Style>
+
+    <!-- 在线状态指示器 -->
+    <Style x:Key="OnlineIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource Secondary}" />
+        <Setter Property="WidthRequest" Value="12" />
+        <Setter Property="HeightRequest" Value="12" />
+        <Setter Property="Stroke" Value="{StaticResource Surface}" />
+        <Setter Property="StrokeThickness" Value="2" />
+    </Style>
+
+    <Style x:Key="OfflineIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource Gray400}" />
+        <Setter Property="WidthRequest" Value="12" />
+        <Setter Property="HeightRequest" Value="12" />
+        <Setter Property="Stroke" Value="{StaticResource Surface}" />
+        <Setter Property="StrokeThickness" Value="2" />
+    </Style>
+
+</ResourceDictionary>

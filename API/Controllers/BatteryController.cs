@@ -12,11 +12,13 @@ namespace LocationShareApp.API.Controllers
     {
         private readonly IBatteryService _batteryService;
         private readonly IUserService _userService;
+        private readonly ILogger<BatteryController> _logger;
 
-        public BatteryController(IBatteryService batteryService, IUserService userService)
+        public BatteryController(IBatteryService batteryService, IUserService userService, ILogger<BatteryController> logger)
         {
             _batteryService = batteryService;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("update")]
@@ -47,6 +49,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "电量更新失败");
                 return StatusCode(500, new { message = "电量更新失败", error = ex.Message });
             }
         }
@@ -71,6 +74,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取电量历史失败");
                 return StatusCode(500, new { message = "获取电量历史失败", error = ex.Message });
             }
         }
@@ -103,6 +107,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取用户电量历史失败");
                 return StatusCode(500, new { message = "获取电量历史失败", error = ex.Message });
             }
         }
@@ -128,6 +133,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取最新电量失败");
                 return StatusCode(500, new { message = "获取最新电量失败", error = ex.Message });
             }
         }
@@ -161,6 +167,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取用户最新电量失败");
                 return StatusCode(500, new { message = "获取最新电量失败", error = ex.Message });
             }
         }

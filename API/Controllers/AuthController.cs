@@ -9,10 +9,12 @@ namespace LocationShareApp.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, ILogger<AuthController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -47,6 +49,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "用户注册失败");
                 return StatusCode(500, new { message = "注册失败", error = ex.Message });
             }
         }
@@ -87,6 +90,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "用户登录失败");
                 return StatusCode(500, new { message = "登录失败", error = ex.Message });
             }
         }

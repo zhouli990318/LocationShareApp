@@ -13,12 +13,14 @@ namespace LocationShareApp.API.Controllers
         private readonly IUserService _userService;
         private readonly ILocationService _locationService;
         private readonly IBatteryService _batteryService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, ILocationService locationService, IBatteryService batteryService)
+        public UserController(IUserService userService, ILocationService locationService, IBatteryService batteryService, ILogger<UserController> logger)
         {
             _userService = userService;
             _locationService = locationService;
             _batteryService = batteryService;
+            _logger = logger;
         }
 
         [HttpGet("profile")]
@@ -46,6 +48,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取用户信息失败");
                 return StatusCode(500, new { message = "获取用户信息失败", error = ex.Message });
             }
         }
@@ -91,6 +94,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "获取关联用户失败");
                 return StatusCode(500, new { message = "获取关联用户失败", error = ex.Message });
             }
         }
@@ -110,6 +114,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "添加关联失败");
                 return StatusCode(500, new { message = "添加关联失败", error = ex.Message });
             }
         }
@@ -129,6 +134,7 @@ namespace LocationShareApp.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "移除关联失败");
                 return StatusCode(500, new { message = "移除关联失败", error = ex.Message });
             }
         }

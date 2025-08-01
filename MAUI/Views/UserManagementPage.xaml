@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LocationShareApp.Views.UserManagementPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             x:DataType="viewmodels:UserManagementViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- 添加用户表单 -->
+        <Frame Grid.Row="0"
+               Style="{StaticResource MaterialTopAppBar}">
+            <StackLayout Spacing="16">
+                
+                <Label Text="添加新用户"
+                       Style="{StaticResource MaterialHeadline2}" />
+
+                <!-- 绑定码输入 -->
+                <StackLayout Spacing="8">
+                    <Label Text="绑定码"
+                           Style="{StaticResource MaterialSubtitle1}" />
+                    <Frame Style="{StaticResource MaterialCard}">
+                        <Entry Text="{Binding BindingCode}"
+                               Placeholder="请输入对方的绑定码"
+                               Style="{StaticResource MaterialEntry}" />
+                    </Frame>
+                </StackLayout>
+
+                <!-- 昵称输入 -->
+                <StackLayout Spacing="8">
+                    <Label Text="备注昵称"
+                           Style="{StaticResource MaterialSubtitle1}" />
+                    <Frame Style="{StaticResource MaterialCard}">
+                        <Entry Text="{Binding NickName}"
+                               Placeholder="为该用户设置一个昵称"
+                               Style="{StaticResource MaterialEntry}" />
+                    </Frame>
+                </StackLayout>
+
+                <!-- 错误信息 -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       FontSize="14"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+                <!-- 添加按钮 -->
+                <Button Text="添加用户"
+                        Command="{Binding AddUserCommand}"
+                        Style="{StaticResource MaterialFAB}"
+                        WidthRequest="200"
+                        HeightRequest="48"
+                        FontSize="16"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
+
+                <!-- 加载指示器 -->
+                <ActivityIndicator IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}"
+                                   Color="{StaticResource Primary}"
+                                   HorizontalOptions="Center" />
+            </StackLayout>
+        </Frame>
+
+        <!-- 已关联用户列表 -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="20" Spacing="15">
+                
+                <!-- 列表标题 -->
+                <StackLayout Orientation="Horizontal" Spacing="8">
+                    <Label Text="已关联用户"
+                           Style="{StaticResource MaterialHeadline2}"
+                           VerticalOptions="Center" />
+                    <Label Text="{Binding ConnectedUsers.Count, StringFormat='({0})'}"
+                           Style="{StaticResource MaterialBody1}"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                    <Button Text="刷新"
+                            Command="{Binding RefreshCommand}"
+                            Style="{StaticResource MaterialTextButton}"
+                            HorizontalOptions="EndAndExpand" />
+                </StackLayout>
+
+                <!-- 用户列表 -->
+                <StackLayout BindableLayout.ItemsSource="{Binding ConnectedUsers}"
+                             Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource MaterialCard}">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    
+                                    <!-- 用户头像 -->
+                                    <Frame Grid.Column="0"
+                                           Style="{StaticResource MaterialAvatar}"
+                                           WidthRequest="48"
+                                           HeightRequest="48">
+                                        <Label Text="{Binding NickName, StringFormat='{0:U1}'}"
+                                               Style="{StaticResource MaterialSubtitle1}"
+                                               TextColor="{StaticResource PrimaryDarkText}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Frame>
+
+                                    <!-- 用户信息 -->
+                                    <StackLayout Grid.Column="1" 
+                                                 Spacing="4" 
+                                                 Margin="16,0,0,0"
+                                                 VerticalOptions="Center">
+                                        <StackLayout Orientation="Horizontal" Spacing="8">
+                                            <Label Text="{Binding NickName}"
+                                                   Style="{StaticResource MaterialSubtitle1}" />
+                                            <Ellipse Style="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
+                                                     VerticalOptions="Center" />
+                                        </StackLayout>
+                                        <Label Text="{Binding LastActiveAt, StringFormat='最后活跃: {0:MM-dd HH:mm}'}"
+                                               Style="{StaticResource MaterialCaption}" />
+                                        <Label Text="{Binding Location.Address}"
+                                               Style="{StaticResource MaterialCaption}"
+                                               IsVisible="{Binding Location, Converter={StaticResource StringToBoolConverter}}"
+                                               LineBreakMode="TailTruncation" />
+                                    </StackLayout>
+
+                                    <!-- 删除按钮 -->
+                                    <Button Grid.Column="2"
+                                            Text="移除"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:UserManagementViewModel}}, Path=RemoveUserCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource MaterialOutlinedButton}"
+                                            TextColor="Red"
+                                            BorderColor="Red"
+                                            VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+
+                <!-- 空状态提示 -->
+                <StackLayout IsVisible="{Binding ConnectedUsers.Count, Converter={StaticResource InvertedBoolConverter}}"
+                             Spacing="20"
+                             Margin="0,50,0,0">
+                    <Label Text="📱"
+                           FontSize="48"
+                           HorizontalOptions="Center" />
+                    <Label Text="还没有关联的用户"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray600}"
+                           HorizontalOptions="Center" />
+                    <Label Text="输入对方的绑定码来添加用户"
+                           FontSize="14"
+                           TextColor="{StaticResource Gray500}"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

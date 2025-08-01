@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using LocationShareApp.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LocationShareApp.API.Data
 {
@@ -35,7 +35,7 @@ namespace LocationShareApp.API.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => new { e.UserId, e.Timestamp });
                 entity.Property(e => e.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                
+
                 entity.HasOne(e => e.User)
                     .WithMany(u => u.Locations)
                     .HasForeignKey(e => e.UserId)
@@ -48,7 +48,7 @@ namespace LocationShareApp.API.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => new { e.UserId, e.Timestamp });
                 entity.Property(e => e.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                
+
                 entity.HasOne(e => e.User)
                     .WithMany(u => u.BatteryRecords)
                     .HasForeignKey(e => e.UserId)
@@ -61,12 +61,12 @@ namespace LocationShareApp.API.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => new { e.UserId, e.ConnectedUserId }).IsUnique();
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                
+
                 entity.HasOne(e => e.User)
                     .WithMany(u => u.Connections)
                     .HasForeignKey(e => e.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
-                    
+
                 entity.HasOne(e => e.ConnectedUser)
                     .WithMany(u => u.ConnectedBy)
                     .HasForeignKey(e => e.ConnectedUserId)
@@ -79,7 +79,7 @@ namespace LocationShareApp.API.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.UserId).IsUnique();
                 entity.Property(e => e.LastUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                
+
                 entity.HasOne(e => e.User)
                     .WithOne()
                     .HasForeignKey<DeviceInfo>(e => e.UserId)
