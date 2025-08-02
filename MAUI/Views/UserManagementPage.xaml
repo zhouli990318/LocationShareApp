@@ -3,6 +3,7 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
+             xmlns:services="clr-namespace:LocationShareApp.Services"
              x:DataType="viewmodels:UserManagementViewModel"
              Title="{Binding Title}">
 
@@ -84,7 +85,7 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding ConnectedUsers}"
                              Spacing="10">
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="services:ConnectedUser">
                             <Frame Style="{StaticResource MaterialCard}">
                                 <Grid ColumnDefinitions="Auto,*,Auto">
                                     

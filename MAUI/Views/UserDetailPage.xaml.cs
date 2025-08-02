@@ -19,6 +19,7 @@ public partial class UserDetailPage : ContentPage
     {
         base.OnAppearing();
         
+        await _viewModel.InitializeAsync();
         // 等待数据加载完成后更新地图
         await Task.Delay(1000);
         UpdateTrackMap();

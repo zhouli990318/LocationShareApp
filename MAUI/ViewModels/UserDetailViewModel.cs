@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LocationShareApp.Services;
 using CommunityToolkit.Mvvm.Input;
+using LocationShareApp.Controls;
 
 namespace LocationShareApp.ViewModels
 {
@@ -75,6 +76,15 @@ namespace LocationShareApp.ViewModels
         public ICommand ViewBatteryHistoryCommand { get; }
         public ICommand ViewDeviceInfoCommand { get; }
 
+        
+        public async Task InitializeAsync()
+        {
+            await LoadUserDetailAsync();
+            await LoadDeviceInfoAsync();
+            await LoadLocationHistoryAsync();
+            await LoadBatteryHistoryAsync();
+        }
+        
         private async Task LoadUserDetailAsync()
         {
             if (UserId <= 0) return;
@@ -142,8 +152,21 @@ namespace LocationShareApp.ViewModels
                 {
                     BatteryHistory.Add(battery);
                 }
+                
+                // 添加调试信息
+                System.Diagnostics.Debug.WriteLine($"电量历史数据加载成功，共 {BatteryHistory.Count} 条记录");
+                if (BatteryHistory.Any())
+                {
+                    var first = BatteryHistory.First();
+                    System.Diagnostics.Debug.WriteLine($"第一条记录: 电量={first.BatteryLevel}%, 充电={first.IsCharging}, 时间={first.Timestamp}");
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"电量历史数据加载失败: {result.ErrorMessage}");
             }
         }
+        
 
         private async Task RefreshAsync()
         {

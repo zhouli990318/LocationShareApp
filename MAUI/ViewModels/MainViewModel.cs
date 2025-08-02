@@ -135,10 +135,37 @@ namespace LocationShareApp.ViewModels
 
         private async Task LoadUserProfileAsync()
         {
-            var result = await _apiService.GetProfileAsync();
-            if (result.IsSuccess && result.Data != null)
+            try
             {
-                CurrentUser = result.Data;
+                // 首先尝试从本地存储加载用户信息
+                var userInfoJson = await _storageService.GetAsync("user_info");
+                if (!string.IsNullOrEmpty(userInfoJson))
+                {
+                    var cachedUser = System.Text.Json.JsonSerializer.Deserialize<UserProfile>(userInfoJson);
+                    if (cachedUser != null)
+                    {
+                        CurrentUser = cachedUser;
+                        _logger.LogInformation("从本地存储加载用户信息成功");
+                    }
+                }
+
+                // 然后尝试从API获取最新的用户信息
+                var result = await _apiService.GetProfileAsync();
+                if (result.IsSuccess && result.Data != null)
+                {
+                    CurrentUser = result.Data;
+                    // 更新本地存储
+                    await _storageService.SetAsync("user_info", System.Text.Json.JsonSerializer.Serialize(result.Data));
+                    _logger.LogInformation("从API加载用户信息成功");
+                }
+                else if (CurrentUser == null)
+                {
+                    _logger.LogWarning("无法加载用户信息: {ErrorMessage}", result.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "加载用户信息时发生错误");
             }
         }
 

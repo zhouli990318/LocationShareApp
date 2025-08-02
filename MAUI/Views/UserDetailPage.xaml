@@ -5,6 +5,7 @@
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              xmlns:viewmodels="clr-namespace:LocationShareApp.ViewModels"
              xmlns:controls="clr-namespace:LocationShareApp.Controls"
+             xmlns:services="clr-namespace:LocationShareApp.Services"
              x:DataType="viewmodels:UserDetailViewModel"
              Title="{Binding Title}">
 
@@ -289,7 +290,7 @@
                     <CollectionView ItemsSource="{Binding LocationHistory}"
                                     HeightRequest="200">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="services:LocationRecord">
                                 <Grid Padding="20,10" ColumnDefinitions="*,Auto">
                                     <StackLayout Grid.Column="0" Spacing="5">
                                         <Label Text="{Binding Address}"

@@ -28,7 +28,15 @@ namespace LocationShareApp.Services
                 _logger.LogInformation("开始应用初始化...");
                 
                 // 恢复认证令牌
-                await RestoreAuthTokenAsync();
+                var hasValidToken = await RestoreAuthTokenAsync();
+                
+                // 如果没有有效的认证令牌，导航到登录页面
+                if (!hasValidToken)
+                {
+                    _logger.LogInformation("未找到有效的认证令牌，导航到登录页面");
+                    Application.Current!.MainPage = new NavigationPage(ServiceHelper.GetService<Views.LoginPage>());
+                    return;
+                }
                 
                 // 检查权限
                 await CheckPermissionsAsync();
@@ -44,7 +52,7 @@ namespace LocationShareApp.Services
             }
         }
 
-        private async Task RestoreAuthTokenAsync()
+        private async Task<bool> RestoreAuthTokenAsync()
         {
             try
             {
@@ -60,15 +68,19 @@ namespace LocationShareApp.Services
                     
                     // 启动SignalR连接
                     await _signalRService.StartConnectionAsync(token);
+                    
+                    return true;
                 }
                 else
                 {
                     _logger.LogInformation("未找到存储的认证令牌");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "恢复认证令牌时发生错误");
+                return false;
             }
         }
 

@@ -33,11 +33,20 @@ namespace LocationShareApp.API.Services
             var query = _context.UserBatteries.Where(ub => ub.UserId == userId);
 
             if (startTime.HasValue)
-                query = query.Where(ub => ub.Timestamp >= startTime.Value);
+            {
+                var utcStartTime = startTime.Value.Kind == DateTimeKind.Utc 
+                    ? startTime.Value 
+                    : DateTime.SpecifyKind(startTime.Value, DateTimeKind.Utc);
+                query = query.Where(ul => ul.Timestamp >= utcStartTime);
+            }
 
             if (endTime.HasValue)
-                query = query.Where(ub => ub.Timestamp <= endTime.Value);
-
+            {
+                var utcEndTime = endTime.Value.Kind == DateTimeKind.Utc 
+                    ? endTime.Value 
+                    : DateTime.SpecifyKind(endTime.Value, DateTimeKind.Utc);
+                query = query.Where(ul => ul.Timestamp <= utcEndTime);
+            }
             return await query.OrderByDescending(ub => ub.Timestamp).ToListAsync();
         }
 

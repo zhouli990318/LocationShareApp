@@ -1,13 +1,18 @@
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
+using LocationShareApp.Services;
+
 namespace LocationShareApp.Controls
 {
     public class BatteryChartView : GraphicsView
     {
+        private INotifyCollectionChanged? _currentCollection;
         public static readonly BindableProperty BatteryDataProperty =
-            BindableProperty.Create(nameof(BatteryData), typeof(List<BatteryRecord>), typeof(BatteryChartView), null, propertyChanged: OnBatteryDataChanged);
+            BindableProperty.Create(nameof(BatteryData), typeof(IEnumerable<BatteryRecord>), typeof(BatteryChartView), null, propertyChanged: OnBatteryDataChanged);
 
-        public List<BatteryRecord>? BatteryData
+        public IEnumerable<BatteryRecord>? BatteryData
         {
-            get => (List<BatteryRecord>?)GetValue(BatteryDataProperty);
+            get => (IEnumerable<BatteryRecord>?)GetValue(BatteryDataProperty);
             set => SetValue(BatteryDataProperty, value);
         }
 
@@ -19,26 +24,69 @@ namespace LocationShareApp.Controls
 
         private static void OnBatteryDataChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is BatteryChartView chartView && chartView.Drawable is BatteryChartDrawable drawable)
+            System.Diagnostics.Debug.WriteLine($"BatteryChartView.OnBatteryDataChanged 被调用");
+            System.Diagnostics.Debug.WriteLine($"oldValue: {oldValue?.GetType().Name}");
+            System.Diagnostics.Debug.WriteLine($"newValue: {newValue?.GetType().Name}");
+            
+            if (bindable is BatteryChartView chartView)
             {
-                drawable.BatteryData = newValue as List<BatteryRecord>;
+                // 取消旧集合的事件监听
+                if (chartView._currentCollection != null)
+                {
+                    chartView._currentCollection.CollectionChanged -= chartView.OnCollectionChanged;
+                }
+
+                // 设置新数据
+                if (chartView.Drawable is BatteryChartDrawable drawable)
+                {
+                    drawable.BatteryData = newValue as IEnumerable<BatteryRecord>;
+                    if (newValue is IEnumerable<BatteryRecord> data)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"设置电量数据，记录数: {data.Count()}");
+                    }
+                }
+
+                // 监听新集合的变化
+                if (newValue is INotifyCollectionChanged newCollection)
+                {
+                    chartView._currentCollection = newCollection;
+                    newCollection.CollectionChanged += chartView.OnCollectionChanged;
+                }
+
                 chartView.Invalidate();
             }
+        }
+
+        private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("ObservableCollection 发生变化，重新绘制图表");
+            Invalidate();
         }
     }
 
     public class BatteryChartDrawable : IDrawable
     {
-        public List<BatteryRecord>? BatteryData { get; set; }
+        public IEnumerable<BatteryRecord>? BatteryData { get; set; }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            // 添加调试信息
+            System.Diagnostics.Debug.WriteLine($"BatteryChartDrawable.Draw 被调用");
+            System.Diagnostics.Debug.WriteLine($"BatteryData 是否为空: {BatteryData == null}");
+            if (BatteryData != null)
+            {
+                var count = BatteryData.Count();
+                System.Diagnostics.Debug.WriteLine($"BatteryData 记录数: {count}");
+            }
+
             if (BatteryData == null || !BatteryData.Any())
             {
+                System.Diagnostics.Debug.WriteLine("显示空状态");
                 DrawEmptyState(canvas, dirtyRect);
                 return;
             }
 
+            System.Diagnostics.Debug.WriteLine("绘制电量图表");
             DrawChart(canvas, dirtyRect);
         }
 
@@ -89,7 +137,7 @@ namespace LocationShareApp.Controls
 
         private void DrawBatteryLine(ICanvas canvas, RectF chartRect)
         {
-            if (BatteryData == null || BatteryData.Count < 2) return;
+            if (BatteryData == null || BatteryData.Count() < 2) return;
 
             var sortedData = BatteryData.OrderBy(b => b.Timestamp).ToList();
             var minTime = sortedData.First().Timestamp;
@@ -174,11 +222,5 @@ namespace LocationShareApp.Controls
             }
         }
     }
-
-    public class BatteryRecord
-    {
-        public int BatteryLevel { get; set; }
-        public bool IsCharging { get; set; }
-        public DateTime Timestamp { get; set; }
-    }
+    
 }
