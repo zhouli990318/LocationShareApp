@@ -112,7 +112,7 @@
                                             <Ellipse Style="{Binding IsOnline, Converter={StaticResource BoolToColorConverter}}"
                                                      VerticalOptions="Center" />
                                         </StackLayout>
-                                        <Label Text="{Binding LastActiveAt, StringFormat='最后活跃: {0:MM-dd HH:mm}'}"
+                                        <Label Text="{Binding LastActiveAt, Converter={StaticResource UtcToLocalTimeStringConverter}, ConverterParameter='最后活跃: MM-dd HH:mm'}"
                                                Style="{StaticResource MaterialCaption}" />
                                         <Label Text="{Binding Location.Address}"
                                                Style="{StaticResource MaterialCaption}"

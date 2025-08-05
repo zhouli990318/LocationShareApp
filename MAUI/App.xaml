@@ -17,6 +17,9 @@
             <helpers:StringToBoolConverter x:Key="StringToBoolConverter" />
             <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <helpers:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <helpers:UtcToLocalTimeConverter x:Key="UtcToLocalTimeConverter" />
+            <helpers:UtcToLocalTimeStringConverter x:Key="UtcToLocalTimeStringConverter" />
+            <helpers:RelativeTimeConverter x:Key="RelativeTimeConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -47,7 +47,6 @@ namespace LocationShareApp
             builder.Services.AddTransient<ModernMapViewModel>();
 
             // 注册Views
-            // 注册Views
             builder.Services.AddTransient<SplashPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<RegisterPage>();
